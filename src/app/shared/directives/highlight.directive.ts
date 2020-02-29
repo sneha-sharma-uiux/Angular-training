@@ -6,9 +6,11 @@ import { Directive, OnInit, OnDestroy, ElementRef , HostListener, Renderer2, Inp
 @Directive({
   //[] - must, represent a property
   // used at ant tag/component
-  selector: '[appHighlight]'
+  selector: '[appHighlight]',
+  exportAs:'appHighlight' // for #myDir="appHighlight"
 })
 export class HighlightDirective implements OnInit, OnDestroy {
+
   @Input('appHighlight')
   color:string='lightgreen';
 
@@ -18,6 +20,9 @@ export class HighlightDirective implements OnInit, OnDestroy {
   }
   ngOnInit(){
     console.log('HighlightDirective ngOnInit');
+    if(!this.color){
+      this.color='lightgreen';
+    }
     console.log('host Tag', this.hostElement.nativeElement.tagName)
   }
   ngOnDestroy(){

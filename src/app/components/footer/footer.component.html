@@ -1,4 +1,8 @@
+<div appHighlight='lightgray' #myHightlight="appHighlight">
 <hr/>
 <p>&copy; Copyrights 2020 {{appCompany}}</p>
 <p>Date: {{today | date:'fullDate' | lowercase}}</p>
 <p>Date: {{today | date:'dd/MM/yyyy'}}</p>
+
+<p> Hightlight color {{myHightlight.color}}</p>
+</div>
