@@ -1,0 +1,31 @@
+<h2>Counter</h2>
+<!--
+    {{expression}} - interpolation
+    [property-name]="expr"  or property = "fixedValue"-- property binding
+    (eventName)="expr" -- event binding
+    [(property)]="counter -- two way binding[prperty +event]"
+-->
+<p *ngIf="counter %2 ==0" appHighlight>Counter {{counter}}</p>
+<p>Counter + 1 = {{counter + 1}}</p>
+
+<div>
+    <span>Counter</span>
+    <input [value]="counter +2" />
+</div>
+
+<div>
+    <span>Two Way Binding</span>
+    <input [(ngModel)]="counter" type="number" />
+</div>
+<button [disabled]="counter%2 ==0">{{counter%2 ==0 ? "Disabled":"Enabled"}}</button>
+<button (click)="increment($event)">+1</button> <!--$event is fixed/ hardcoded parameter-->
+<button (click)="counter=counter-1">-1</button>
+
+<div>
+    <span>Two Way Binding</span>
+    <input [ngModel]="counter" (ngModelChange)="counter=$event" type="number" />
+</div>
+
+<p>Power Pipe {{2 | power:counter}}</p>
+<p>Power Pipe {{counter | power:3}}</p>
+<p>Power Pipe {{counter | power:counter}}</p>

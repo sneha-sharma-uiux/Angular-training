@@ -1,0 +1,27 @@
+<h2>Product {{product.id?'Edit':'Create'}} {{product.name}}</h2>
+<!--
+    #productName - refers to input Dom Element
+     #producNametModel="ngModel" - refers to NgModel directive instance
+-->
+<form (ngSubmit)="save()" #productForm="ngForm">
+    Name <input name="name" type="text" [(ngModel)]="product.name" minlength="3" required 
+            #productName
+            #producNametModel="ngModel"/>
+        <p *ngIf="producNametModel.invalid"> Name is invalid, enter right name</p>
+<p *ngIf="producNametModel.errors?.required">Name is required</p>
+<p *ngIf="producNametModel.errors?.minlength">Minimun {{producNametModel.errors?.minlength.requiredLength}} chars needed</p>
+        <pre>
+            Errors{{producNametModel.errors |json}}
+        </pre>
+
+    Price <input name="price" type="number" [(ngModel)]="product.price"  required 
+            #producPriceModel='ngModel'/>
+            <p *ngIf="producPriceModel.invalid"> Price is invalid, enter right name</p>
+    Year <input name="year" type="number" [(ngModel)]="product.year" pattern="[0-9]{4}" required />
+
+    Brand <select name="brandId" [(ngModel)]="product.brandId" required>
+        <option *ngFor="let brand of brands$ |async" [value]="brand.id">{{brand.name}}</option>
+    </select>
+
+    <button type="submit" [disabled]="productForm.invalid">Save</button>
+</form>

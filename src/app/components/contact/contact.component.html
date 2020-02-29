@@ -1,0 +1,35 @@
+<h2>Contact:</h2>
+<!--
+    ?. --- elvis operator -null check within template  [Angular specific only for view not typescript feature]
+-->
+<p>Main Office City {{mainOffice?.city}}</p>
+
+<!--Dom Reference-->
+
+<p #message></p>
+<input #greeting />
+
+<button (click)="message.textContent=greeting.value">Set Message</button>
+
+<!--
+    Contact is parent
+
+    parent to child
+-->
+<!--
+    @Output
+    contactEvent
+-->
+<app-address [address]="headOffice" (contactEvent)="contactHandler($event)">
+    <h4>Head Office</h4>
+</app-address>
+
+<app-address [address]="branchOffice" (contactEvent)="contactHandler($event)">
+    <h4>Branch Office</h4>
+</app-address>
+
+<pre>
+    {{headOffice | json}}
+</pre>
+<h2>Contct Likes {{contactLikes}}</h2>
+<app-like [(likes)]="contactLikes"></app-like>
