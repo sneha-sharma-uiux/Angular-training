@@ -4,6 +4,8 @@ import { CartService } from 'src/app/cart/services/cart.service';
 import { Observable } from 'rxjs';
 import { Product } from '../../models/product';
 import { CartItem } from 'src/app/cart/models/cart-item';
+import { ActivatedRoute } from '@angular/router';
+import { of } from "rxjs";
 
 @Component({
   selector: 'app-product-list',
@@ -19,7 +21,14 @@ export class ProductListComponent implements OnInit {
 
 
   constructor(private productservice:ProductService,
-              private cartservice:CartService) { }
+              private cartservice:CartService,
+              private activatedRoute:ActivatedRoute) {
+                console.log(this.activatedRoute.snapshot.data);
+
+                let products=this.activatedRoute.snapshot.data.products
+                //let roles=this.activatedRoute.snapshot.data.roles
+                this.products$=of(products);
+               }
 
   ngOnInit() {
     this.products$= this.productservice.getProducts();

@@ -5,6 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
   pure:false // default is true
 })
 export class SortPipe implements PipeTransform {
+
+  //stateful pipe
+  sortedItems:any[];
+  actualItems:any[];
   //transform is called all times if pure is set to false
   //transform is called whenever object changed if pure set to true
   transform(items: any[], 
@@ -12,6 +16,10 @@ export class SortPipe implements PipeTransform {
            order: string = 'asc'): any {
     if (!items || !fieldName) {
       return items;
+    }
+
+    if(items !== this.actualItems){
+      this.actualItems=items;
     }
 
     if (order === 'desc') {

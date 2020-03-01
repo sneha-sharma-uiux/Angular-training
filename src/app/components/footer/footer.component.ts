@@ -17,4 +17,8 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
   }
 
+  raise(){
+    throw new Error('Crash');
+  }
+
 }

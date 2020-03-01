@@ -2,7 +2,7 @@
 //components, directives, pipes, services
 //dependencies to other modules
 
-import { NgModule } from "@angular/core";
+import { NgModule, ErrorHandler } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser"; //compiler and common module reference from @angular
 import { AppComponent } from "./app.component";
 import { HomeComponent } from './components/home/home.component';
@@ -16,9 +16,13 @@ import {FormsModule} from '@angular/forms';
 import { CartModule } from './cart/cart.module';
 import { Route, RouterModule } from "@angular/router";
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { ProductRoutingModule } from './product/product-routing.module';
+//import { ProductRoutingModule } from './product/product-routing.module';
 //import {LocationStrategy, HashLocationStrategy, PathLocationStrategy  } from "@angular/common";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { ErrorHandlerService } from './services/error-handler.service';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './shared/guards/auth.guard';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 //1. configuration
 const routes: Route[]=[
@@ -39,6 +43,15 @@ const routes: Route[]=[
         path:'counter',
         component:CounterComponent
     },
+    {
+        path:'products',
+        loadChildren:'./product/product-routing.module#ProductRoutingModule',
+        canActivate:[AuthGuard]
+    },
+    {
+        path:'auth/login',
+        component:LoginComponent
+    },
     //at last
     {
         path:'**',
@@ -57,7 +70,7 @@ const routes: Route[]=[
         //2. apply the configuration
         //root/app/main.module
         RouterModule.forRoot(routes),
-        ProductRoutingModule,
+       // ProductRoutingModule,
     ],
     declarations:[
         //components, pipes, directives
@@ -68,14 +81,24 @@ const routes: Route[]=[
         CounterComponent,
         HeaderComponent,
         FooterComponent,
-        NotFoundComponent
+        NotFoundComponent,
+        LoginComponent
     ],
-    // providers:[
+     providers:[
     //     {
     //         provide:LocationStrategy, //base class or interface
     //         useClass:HashLocationStrategy //create instance (Pathlocation is default)
     //     }
-    // ],
+            {
+                provide: ErrorHandler,
+                useClass: ErrorHandlerService
+            },
+            {
+                provide: HTTP_INTERCEPTORS, // more than one interceptor
+                useClass:AuthInterceptorService,
+                multi:true  // to show multiple interceptor
+            }
+     ],
     bootstrap:[
         AppComponent
     ]
